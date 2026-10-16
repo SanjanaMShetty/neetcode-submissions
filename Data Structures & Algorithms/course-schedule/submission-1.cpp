@@ -1,0 +1,32 @@
+class Solution {
+public:
+    bool isCycleDFS(int src, vector<vector<int>>& edges, vector<bool> &vis,vector<bool>& recPath){
+        vis[src]=true;
+        recPath[src]=true;
+        for(int i=0;i<edges.size();i++){
+            int u = edges[i][1];
+            int v = edges[i][0];
+            if(u == src){
+                if(!vis[v]){
+                    if(isCycleDFS(v,edges,vis,recPath)){
+                        return true;
+                    }
+                }else if(recPath[v]){
+                    return true;
+                }
+            }
+        }
+        recPath[src]=false;
+        return false;
+    }
+    bool canFinish(int n, vector<vector<int>>& edges) {
+        vector<bool> vis(n+1,false);
+        vector<bool> recPath(n+1,false);
+        for(int i=0;i<n;i++){
+            if(isCycleDFS(i,edges,vis,recPath)){
+                return false;
+            }
+        }
+        return true;
+    }
+};
